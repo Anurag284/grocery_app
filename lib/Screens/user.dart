@@ -13,6 +13,16 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+  final TextEditingController _addressTextController = TextEditingController(
+    text: "Enter Your Address",
+  );
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _addressTextController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
@@ -64,7 +74,9 @@ class _UserScreenState extends State<UserScreen> {
                   title: 'Address',
                   subtitle: 'Address info',
                   icon: IconlyLight.profile,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _showAddressDialog();
+                  },
                   color: color,
                 ),
                 _listTile(
@@ -117,7 +129,9 @@ class _UserScreenState extends State<UserScreen> {
                   title: 'Logout',
                   // subtitle: 'Logout from the app',
                   icon: IconlyLight.logout,
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _showLogoutDialog();
+                  },
                   color: color,
                 ),
               ],
@@ -125,6 +139,70 @@ class _UserScreenState extends State<UserScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showAddressDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Update Address"),
+          content: TextField(
+            // onChanged: (value) {
+            //   _addressTextController.text = value;
+            //   print(
+            //     '_addressTextController.text ${_addressTextController.text}',
+            //   );
+            // },
+            controller: _addressTextController,
+            maxLines: 5,
+            decoration: InputDecoration(hintText: "Enter your address"),
+          ),
+          actions: [TextButton(onPressed: () {}, child: Text('update'))],
+        );
+      },
+    );
+  }
+
+  Future<void> _showLogoutDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/images/warning-sign.png',
+                height: 20,
+                width: 20,
+                fit: BoxFit.fill,
+              ),
+              SizedBox(width: 8),
+              Text("Sign Out"),
+            ],
+          ),
+
+          content: Text(
+            "Are you sure you want to sign out?",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.cyan)),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text('OK', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
     );
   }
 
