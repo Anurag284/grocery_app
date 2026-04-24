@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextWidget extends StatelessWidget {
+// ignore: must_be_immutable
+class TextWidget extends StatefulWidget {
   TextWidget({
     super.key,
     required this.title,
@@ -16,14 +17,19 @@ class TextWidget extends StatelessWidget {
   int maxLines = 10;
 
   @override
+  State<TextWidget> createState() => _TextWidgetState();
+}
+
+class _TextWidgetState extends State<TextWidget> {
+  @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      widget.title,
       style: TextStyle(
         overflow: TextOverflow.ellipsis,
-        color: color,
-        fontSize: textSize,
-        fontWeight: isTitle ? FontWeight.bold : FontWeight.normal,
+        color: widget.color,
+        fontSize: widget.textSize,
+        fontWeight: widget.isTitle ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }
