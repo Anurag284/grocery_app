@@ -21,7 +21,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     {'page': CartScreen(), 'title': "Cart Screen"},
     {'page': UserScreen(), 'title': "User Screen"},
   ];
-  int _selectIndex = 1;
+  int _selectIndex = 0;
   void _selectedPage(int index) {
     setState(() {
       _selectIndex = index;
