@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Services/utils.dart';
+import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/price_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 
@@ -60,16 +61,7 @@ class OnSaleWidget extends StatelessWidget {
                                 color: color,
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                print("Print hear icon presswd");
-                              },
-                              child: Icon(
-                                IconlyLight.heart,
-                                size: 22,
-                                color: color,
-                              ),
-                            ),
+                            HeartButton(),
                           ],
                         ),
                       ],
