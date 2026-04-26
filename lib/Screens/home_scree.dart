@@ -1,6 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Services/utils.dart';
+import 'package:grocery_app/Widget/on_sale_widget.dart';
+import 'package:grocery_app/Widget/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,23 +25,69 @@ class _HomeScreenState extends State<HomeScreen> {
     final themeState = utils.getTheme;
     Size size = utils.screenSize;
     return Scaffold(
-      body: SizedBox(
-        height: size.height * 0.33,
-        child: Swiper(
-          itemBuilder: (BuildContext context, int index) {
-            return Image.asset(_offerImages[index], fit: BoxFit.fill);
-          },
-          autoplay: true,
-          itemCount: _offerImages.length,
-          pagination: SwiperPagination(
-            alignment: Alignment.bottomCenter,
-            builder: DotSwiperPaginationBuilder(
-              color: Colors.white,
-              activeColor: Colors.red,
+      body: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.33,
+            child: Swiper(
+              itemBuilder: (BuildContext context, int index) {
+                return Image.asset(_offerImages[index], fit: BoxFit.fill);
+              },
+              autoplay: true,
+              itemCount: _offerImages.length,
+              pagination: SwiperPagination(
+                alignment: Alignment.bottomCenter,
+                builder: DotSwiperPaginationBuilder(
+                  color: Colors.white,
+                  activeColor: Colors.red,
+                ),
+              ),
+              // control: SwiperControl(color: Colors.black),
             ),
           ),
-          // control: SwiperControl(color: Colors.black),
-        ),
+          SizedBox(height: 6),
+          TextButton(
+            onPressed: () {},
+            child: TextWidget(
+              title: 'View All',
+              color: Colors.blue,
+              textSize: 20,
+              isTitle: true,
+            ),
+          ),
+          Row(
+            children: [
+              RotatedBox(
+                quarterTurns: -1,
+                child: Row(
+                  children: [
+                    TextWidget(
+                      title: 'On Sale'.toUpperCase(),
+                      color: Colors.red,
+                      textSize: 22,
+                      isTitle: true,
+                    ),
+                    SizedBox(width: 5),
+                    Icon(IconlyLight.discount, color: Colors.red),
+                  ],
+                ),
+              ),
+              SizedBox(width: 8),
+              Flexible(
+                child: SizedBox(
+                  height: size.height * 0.24,
+                  child: ListView.builder(
+                    itemCount: 10,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return OnSaleWidget();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
