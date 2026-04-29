@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return Image.asset(_offerImages[index], fit: BoxFit.fill);
                 },
+                autoplayDelay: 2000,
                 autoplay: true,
                 itemCount: _offerImages.length,
                 pagination: SwiperPagination(
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(width: 8),
                 Flexible(
                   child: SizedBox(
-                    height: size.height * 0.24,
+                    height: size.height * 0.20,
                     child: ListView.builder(
                       itemCount: 10,
                       scrollDirection: Axis.horizontal,

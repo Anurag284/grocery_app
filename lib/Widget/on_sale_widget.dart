@@ -32,6 +32,7 @@ class OnSaleWidget extends StatelessWidget {
                   children: [
                     FancyShimmerImage(
                       imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                      errorWidget: Image.asset('assets/images/cat/fruits.png'),
                       height: size.width * 0.22,
                       width: size.width * 0.22,
                       boxFit: BoxFit.fill,

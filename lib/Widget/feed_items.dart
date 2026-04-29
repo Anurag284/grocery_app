@@ -37,6 +37,7 @@ class _FeedItemsState extends State<FeedItems> {
             children: [
               FancyShimmerImage(
                 imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                errorWidget: Image.asset('assets/images/cat/fruits.png'),
                 width: size.width * 0.22,
                 height: size.width * 0.22,
                 boxFit: BoxFit.fill,
