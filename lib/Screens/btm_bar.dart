@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
-import 'package:grocery_app/Screens/cart.dart';
+import 'package:grocery_app/Screens/Cart/cart_screen.dart';
 import 'package:grocery_app/Screens/category.dart';
 import 'package:grocery_app/Screens/home_scree.dart';
 import 'package:grocery_app/Screens/user.dart';
@@ -21,7 +21,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     {'page': CartScreen(), 'title': "Cart Screen"},
     {'page': UserScreen(), 'title': "User Screen"},
   ];
-  int _selectIndex = 0;
+  int _selectIndex = 2;
   void _selectedPage(int index) {
     setState(() {
       _selectIndex = index;
