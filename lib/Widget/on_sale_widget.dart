@@ -69,7 +69,12 @@ class OnSaleWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                PriceWidget(),
+                PriceWidget(
+                  isOnSale: true,
+                  price: 5.9,
+                  salePrice: 2.9,
+                  textPrice: '1',
+                ),
                 SizedBox(height: 5),
                 TextWidget(
                   title: 'Product title',

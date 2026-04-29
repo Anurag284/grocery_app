@@ -65,9 +65,18 @@ class _FeedItemsState extends State<FeedItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    PriceWidget(),
+                    Flexible(
+                      flex: 4,
+                      child: PriceWidget(
+                        isOnSale: false,
+                        price: 5.9,
+                        salePrice: 2.99,
+                        textPrice: _quantityTextController.text,
+                      ),
+                    ),
                     SizedBox(width: 8),
                     Flexible(
+                      flex: 2,
                       child: Row(
                         children: [
                           FittedBox(
@@ -80,6 +89,7 @@ class _FeedItemsState extends State<FeedItems> {
                           ),
                           SizedBox(width: 5),
                           Flexible(
+                            // flex: 2,
                             child: TextFormField(
                               controller: _quantityTextController,
                               key: ValueKey('10\$'),

@@ -1,10 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/feed_items.dart';
 import 'package:grocery_app/Widget/on_sale_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:grocery_app/inner_screens/feeds_screens.dart';
+import 'package:grocery_app/inner_screens/on_sale_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -51,7 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 6),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                GlobalMethods.navigateTo(
+                  context: context,
+                  routeName: OnSaleScreen.routeName,
+                );
+              },
               child: TextWidget(
                 title: 'View All',
                 color: Colors.blue,
@@ -105,7 +113,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   // Spacer(),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GlobalMethods.navigateTo(
+                        context: context,
+                        routeName: FeedsScreens.routeName,
+                      );
+                    },
                     child: TextWidget(
                       title: 'Browse All',
                       color: Colors.blue,
@@ -120,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
+              padding: EdgeInsets.all(0),
               // crossAxisSpacing: 10,
               childAspectRatio: size.width / (size.height * 0.6),
               children: List.generate(4, (index) => FeedItems()),
