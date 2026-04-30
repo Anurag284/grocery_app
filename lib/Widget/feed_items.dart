@@ -1,10 +1,12 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/price_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:grocery_app/inner_screens/product_details_screen.dart';
 
 class FeedItems extends StatefulWidget {
   const FeedItems({super.key});
@@ -31,7 +33,12 @@ class _FeedItemsState extends State<FeedItems> {
         borderRadius: BorderRadius.circular(12),
         color: Theme.of(context).cardColor,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            GlobalMethods.navigateTo(
+              context: context,
+              routeName: ProductDetailsScreen.routeName,
+            );
+          },
           borderRadius: BorderRadius.circular(12),
           child: Column(
             children: [
