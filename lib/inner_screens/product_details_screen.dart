@@ -142,7 +142,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _quantityWidget(
-                        fct: () {},
+                        fct: () {
+                          if (quantityTextController.text == '1') {
+                            return;
+                          } else {
+                            setState(() {
+                              quantityTextController.text =
+                                  (int.parse(quantityTextController.text) - 1)
+                                      .toString();
+                            });
+                          }
+                        },
                         icon: CupertinoIcons.minus_square,
                         color: Colors.red,
                       ),
@@ -176,7 +186,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                       SizedBox(width: 5),
                       _quantityWidget(
-                        fct: () {},
+                        fct: () {
+                          setState(() {
+                            quantityTextController.text =
+                                (int.parse(quantityTextController.text) + 1)
+                                    .toString();
+                          });
+                        },
                         icon: CupertinoIcons.plus_square,
                         color: Colors.green,
                       ),
@@ -217,7 +233,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       isTitle: true,
                                     ),
                                     TextWidget(
-                                      title: 'Kg',
+                                      title: '${quantityTextController.text}Kg',
                                       color: color,
                                       textSize: 16,
                                       isTitle: false,

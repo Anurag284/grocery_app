@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Services/utils.dart';
+import 'package:grocery_app/Widget/back_widget.dart';
 import 'package:grocery_app/Widget/on_sale_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 
@@ -15,13 +16,7 @@ class OnSaleScreen extends StatelessWidget {
     final Size size = Utils(context).screenSize;
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(IconlyLight.arrowLeft2, color: color),
-        ),
+        leading: BackWidget(),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: TextWidget(

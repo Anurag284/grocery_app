@@ -83,7 +83,20 @@ class _CartWidgetState extends State<CartWidget> {
                           child: Row(
                             children: [
                               _quantityWidget(
-                                fct: () {},
+                                fct: () {
+                                  if (quantityTextController.text == '1') {
+                                    return;
+                                  } else {
+                                    setState(() {
+                                      quantityTextController.text =
+                                          (int.parse(
+                                                    quantityTextController.text,
+                                                  ) -
+                                                  1)
+                                              .toString();
+                                    });
+                                  }
+                                },
                                 icon: CupertinoIcons.minus,
                                 color: Colors.red,
                               ),
@@ -114,7 +127,16 @@ class _CartWidgetState extends State<CartWidget> {
                                 ),
                               ),
                               _quantityWidget(
-                                fct: () {},
+                                fct: () {
+                                  setState(() {
+                                    quantityTextController.text =
+                                        (int.parse(
+                                                  quantityTextController.text,
+                                                ) +
+                                                1)
+                                            .toString();
+                                  });
+                                },
                                 icon: CupertinoIcons.plus,
                                 color: Colors.green,
                               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Screens/Cart/cart_widget.dart';
+import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 
@@ -19,7 +20,21 @@ class CartScreen extends StatelessWidget {
           textSize: 22,
           isTitle: true,
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(IconlyLight.delete))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              GlobalMethods.warningDialog(
+                title: 'Empty Cart',
+                subtitle: 'Are you sure?',
+                fct: () {
+                  // Handle empty cart logic here
+                },
+                context: context,
+              );
+            },
+            icon: Icon(IconlyLight.delete),
+          ),
+        ],
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
