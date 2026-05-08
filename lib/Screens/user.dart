@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
 import 'package:grocery_app/Screens/Orders/order_screen.dart';
+import 'package:grocery_app/Screens/Viewed_recently/viewed_screen.dart';
 import 'package:grocery_app/Screens/Wishlist/wishlist_screen.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
@@ -110,7 +111,12 @@ class _UserScreenState extends State<UserScreen> {
                   title: 'Viewed',
                   // subtitle: 'Your viewed products',
                   icon: IconlyLight.show,
-                  onPressed: () {},
+                  onPressed: () {
+                    GlobalMethods.navigateTo(
+                      context: context,
+                      routeName: ViewedScreen.routeName,
+                    );
+                  },
                   color: color,
                 ),
                 _listTile(
