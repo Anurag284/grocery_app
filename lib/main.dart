@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
+import 'package:grocery_app/Screens/Auth/forget_password.dart';
 import 'package:grocery_app/Screens/Auth/login.dart';
+import 'package:grocery_app/Screens/Auth/signup.dart';
 import 'package:grocery_app/Screens/Orders/order_screen.dart';
 import 'package:grocery_app/Screens/Viewed_recently/viewed_screen.dart';
 import 'package:grocery_app/Screens/Wishlist/wishlist_screen.dart';
@@ -55,6 +57,10 @@ class _MyAppState extends State<MyApp> {
             theme: Styles.themeData(themeProvider.darkTheme, context),
             home: LoginScreen(),
             routes: {
+              LoginScreen.routeName: (context) => LoginScreen(),
+              SignupScreen.routeName: (context) => SignupScreen(),
+              ForgetPasswordScreen.routeName:
+                  (context) => ForgetPasswordScreen(),
               OnSaleScreen.routeName: (context) => OnSaleScreen(),
               FeedsScreens.routeName: (context) => FeedsScreens(),
               ProductDetailsScreen.routeName:

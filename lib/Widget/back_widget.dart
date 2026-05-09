@@ -13,7 +13,7 @@ class BackWidget extends StatelessWidget {
       onTap: () {
         Navigator.pop(context);
       },
-      child: Icon(IconlyLight.arrowLeft2, color: color),
+      child: Icon(IconlyLight.arrowLeft2, color: Colors.white),
     );
   }
 }
