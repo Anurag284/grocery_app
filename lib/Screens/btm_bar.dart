@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide badges;
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
 import 'package:grocery_app/Screens/Cart/cart_screen.dart';
 import 'package:grocery_app/Screens/category.dart';
 import 'package:grocery_app/Screens/home_screen.dart';
 import 'package:grocery_app/Screens/user.dart';
+import 'package:grocery_app/Services/utils.dart';
+import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -31,6 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
+    final Color color = Utils(context).color;
     bool _isDark = themeState.darkTheme;
     return Scaffold(
       // appBar: AppBar(title: Text(_pages[_selectIndex]['title'])),
@@ -56,7 +60,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
             label: "Categories",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_selectIndex == 2 ? IconlyBold.buy : IconlyLight.buy),
+            icon: Badge(
+              label: FittedBox(
+                child: TextWidget(title: '2', color: color, textSize: 10),
+              ),
+              alignment: Alignment.topRight,
+              isLabelVisible: true,
+              backgroundColor: Colors.lightBlueAccent,
+              child: Icon(_selectIndex == 2 ? IconlyBold.buy : IconlyLight.buy),
+            ),
             label: "Cart",
           ),
           BottomNavigationBarItem(
