@@ -134,7 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(0),
               // crossAxisSpacing: 10,
               childAspectRatio: size.width / (size.height * 0.6),
-              children: List.generate(4, (index) => FeedItems()),
+              children: List.generate(
+                Constss.productsList.length < 4
+                    ? Constss.productsList.length
+                    : 4,
+                (index) => FeedItems(
+                  imageUrl: Constss.productsList[index].imageUrl,
+                  title: Constss.productsList[index].title,
+                ),
+              ),
             ),
           ],
         ),

@@ -9,8 +9,9 @@ import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/product_details_screen.dart';
 
 class FeedItems extends StatefulWidget {
-  const FeedItems({super.key});
+  const FeedItems({super.key, required this.imageUrl, required this.title});
 
+  final String imageUrl, title;
   @override
   State<FeedItems> createState() => _FeedItemsState();
 }
@@ -43,7 +44,7 @@ class _FeedItemsState extends State<FeedItems> {
           child: Column(
             children: [
               FancyShimmerImage(
-                imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                imageUrl: widget.imageUrl,
                 errorWidget: Image.asset('assets/images/cat/fruits.png'),
                 width: size.width * 0.22,
                 height: size.width * 0.22,
@@ -57,11 +58,15 @@ class _FeedItemsState extends State<FeedItems> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget(
-                      title: 'Title',
-                      color: color,
-                      textSize: 20,
-                      isTitle: true,
+                    Flexible(
+                      flex: 3,
+                      child: TextWidget(
+                        title: widget.title,
+                        color: color,
+                        maxLines: 1,
+                        textSize: 18,
+                        isTitle: true,
+                      ),
                     ),
                     HeartButton(),
                   ],

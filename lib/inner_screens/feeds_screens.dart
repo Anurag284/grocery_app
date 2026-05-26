@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Consts/constss.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/back_widget.dart';
 import 'package:grocery_app/Widget/feed_items.dart';
@@ -89,7 +90,13 @@ class _FeedsScreensState extends State<FeedsScreens> {
               padding: EdgeInsets.zero,
               childAspectRatio: size.width / (size.height * 0.59),
 
-              children: List.generate(10, (index) => const FeedItems()),
+              children: List.generate(
+                Constss.productsList.length,
+                (index) => FeedItems(
+                  imageUrl: Constss.productsList[index].imageUrl,
+                  title: Constss.productsList[index].title,
+                ),
+              ),
             ),
           ],
         ),
