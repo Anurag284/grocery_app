@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Services/utils.dart';
+import 'package:grocery_app/Widget/empty_product_screen.dart';
 import 'package:grocery_app/Widget/on_sale_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:provider/provider.dart';
 
 class OnSaleScreen extends StatelessWidget {
   static const routeName = "/OnSaleScreen";
@@ -13,6 +17,8 @@ class OnSaleScreen extends StatelessWidget {
     bool isEmpty = false;
     final Color color = Utils(context).color;
     final Size size = Utils(context).screenSize;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> productOnSale = productProviders.getOnSaleProduct;
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(),
@@ -26,36 +32,19 @@ class OnSaleScreen extends StatelessWidget {
         ),
       ),
       body:
-          isEmpty
-              // ignore: dead_code
-              ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Image.asset('assets/images/box.png'),
-                      ),
-                      Text(
-                        'No Product on sale yet\n Stay Tuned!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: color,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
+          productOnSale.isEmpty
+              ? EmptyProductScreen(text: 'No Product on sale yet\n Stay Tuned!')
               : GridView.count(
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(0),
                 // crossAxisSpacing: 10,
                 childAspectRatio: size.width / (size.height * 0.49),
-                children: List.generate(16, (index) => OnSaleWidget()),
+                children: List.generate(productOnSale.length, (index) {
+                  return ChangeNotifierProvider.value(
+                    value: productOnSale[index],
+                    child: OnSaleWidget(),
+                  );
+                }),
               ),
     );
   }

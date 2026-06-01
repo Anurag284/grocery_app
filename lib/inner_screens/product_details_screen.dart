@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const routeName = '/ProductDetails';
@@ -27,6 +29,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     Color color = Utils(context).color;
     Size size = Utils(context).screenSize;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    final prodId = ModalRoute.of(context)!.settings.arguments as String;
+    final getCurentProduct = productProviders.findProdBuId(prodId);
+    double usedPrice =
+        getCurentProduct.isOnSale
+            ? getCurentProduct.salePrice
+            : getCurentProduct.price;
+    double totalPrice = usedPrice * double.parse(quantityTextController.text);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -46,7 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Flexible(
             flex: 2,
             child: FancyShimmerImage(
-              imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+              imageUrl: getCurentProduct.imageUrl,
               errorWidget: Image.asset('assets/images/cat/fruits.png'),
               width: size.width * 0.8,
               // height: size.height * 0.36,
@@ -73,7 +83,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: [
                         Flexible(
                           child: TextWidget(
-                            title: 'title',
+                            title: getCurentProduct.title,
                             color: color,
                             textSize: 25,
                             isTitle: true,
@@ -93,23 +103,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        //used Price
                         TextWidget(
-                          title: '\$ 2.59',
+                          title: '\$ ${usedPrice.toStringAsFixed(2)}/',
                           color: Colors.green,
                           textSize: 22,
                           isTitle: true,
                         ),
                         TextWidget(
-                          title: 'Kg',
+                          title: getCurentProduct.isPiece ? 'Piece' : 'KG',
                           color: color,
                           textSize: 12,
                           isTitle: false,
                         ),
                         SizedBox(width: 10),
                         Visibility(
-                          visible: true,
+                          visible: getCurentProduct.isOnSale ? true : false,
                           child: Text(
-                            '\$3.9',
+                            '\$ ${getCurentProduct.price.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 15,
                               color: color,
@@ -227,13 +238,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 child: Row(
                                   children: [
                                     TextWidget(
-                                      title: '\$ 2.59/',
+                                      title:
+                                          '\$ ${totalPrice.toStringAsFixed(2)}/',
                                       color: color,
                                       textSize: 22,
                                       isTitle: true,
                                     ),
                                     TextWidget(
-                                      title: '${quantityTextController.text}Kg',
+                                      title:
+                                          '${quantityTextController.text}${getCurentProduct.isPiece ? 'Piece' : 'Kg'}',
                                       color: color,
                                       textSize: 16,
                                       isTitle: false,

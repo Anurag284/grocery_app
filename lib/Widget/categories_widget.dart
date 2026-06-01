@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
+import 'package:grocery_app/Screens/category.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:grocery_app/inner_screens/cat_screen.dart';
+import 'package:grocery_app/inner_screens/product_details_screen.dart';
 import 'package:provider/provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
@@ -19,7 +22,11 @@ class CategoriesWidget extends StatelessWidget {
     double _screenwidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
-        print("Category tapped");
+        Navigator.pushNamed(
+          context,
+          CategoryInnerScreen.routeName,
+          arguments: catText,
+        );
       },
       child: Container(
         decoration: BoxDecoration(

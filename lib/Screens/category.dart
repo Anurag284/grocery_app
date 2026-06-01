@@ -22,6 +22,8 @@ class CategoryScreen extends StatelessWidget {
     {'image': 'assets/images/cat/spices.png', 'catText': 'Spices'},
     {'image': 'assets/images/cat/grains.png', 'catText': 'Grains'},
   ];
+
+  // static const routeName = "/CategoryScreen";
   @override
   Widget build(BuildContext context) {
     final utils = Utils(context);

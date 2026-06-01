@@ -7,6 +7,8 @@ import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/price_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/product_details_screen.dart';
+import 'package:grocery_app/models/product_model.dart' show ProductModel;
+import 'package:provider/provider.dart';
 
 class OnSaleWidget extends StatelessWidget {
   const OnSaleWidget({super.key});
@@ -15,6 +17,7 @@ class OnSaleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Utils(context).getTheme;
     final Color color = Utils(context).color;
+    final productModel = Provider.of<ProductModel>(context);
     Size size = Utils(context).screenSize;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -23,10 +26,15 @@ class OnSaleWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            GlobalMethods.navigateTo(
-              context: context,
-              routeName: ProductDetailsScreen.routeName,
+            Navigator.pushNamed(
+              context,
+              ProductDetailsScreen.routeName,
+              arguments: productModel.id,
             );
+            // GlobalMethods.navigateTo(
+            //   context: context,
+            //   routeName: ProductDetailsScreen.routeName,
+            // );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -38,7 +46,7 @@ class OnSaleWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FancyShimmerImage(
-                      imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                      imageUrl: productModel.imageUrl,
                       errorWidget: Image.asset('assets/images/cat/fruits.png'),
                       height: size.width * 0.22,
                       width: size.width * 0.22,
@@ -53,7 +61,7 @@ class OnSaleWidget extends StatelessWidget {
                     Column(
                       children: [
                         TextWidget(
-                          title: '1KG',
+                          title: productModel.isPiece ? '1 Piece' : '1 KG',
                           color: color,
                           textSize: 22,
                           isTitle: true,
@@ -78,13 +86,13 @@ class OnSaleWidget extends StatelessWidget {
                 ),
                 PriceWidget(
                   isOnSale: true,
-                  price: 5.9,
-                  salePrice: 2.9,
+                  price: productModel.price,
+                  salePrice: productModel.salePrice,
                   textPrice: '1',
                 ),
                 SizedBox(height: 5),
                 TextWidget(
-                  title: 'Product title',
+                  title: productModel.title,
                   color: color,
                   textSize: 16,
                   isTitle: true,

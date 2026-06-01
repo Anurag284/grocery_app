@@ -7,11 +7,12 @@ import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/price_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/product_details_screen.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:provider/provider.dart';
 
 class FeedItems extends StatefulWidget {
-  const FeedItems({super.key, required this.imageUrl, required this.title});
+  const FeedItems({super.key});
 
-  final String imageUrl, title;
   @override
   State<FeedItems> createState() => _FeedItemsState();
 }
@@ -27,6 +28,7 @@ class _FeedItemsState extends State<FeedItems> {
   Widget build(BuildContext context) {
     final Size size = Utils(context).screenSize;
     final Color color = Utils(context).color;
+    final productModel = Provider.of<ProductModel>(context);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -35,16 +37,21 @@ class _FeedItemsState extends State<FeedItems> {
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
-            GlobalMethods.navigateTo(
-              context: context,
-              routeName: ProductDetailsScreen.routeName,
+            Navigator.pushNamed(
+              context,
+              ProductDetailsScreen.routeName,
+              arguments: productModel.id,
             );
+            // GlobalMethods.navigateTo(
+            //   context: context,
+            //   routeName: ProductDetailsScreen.routeName,
+            // );
           },
           borderRadius: BorderRadius.circular(12),
           child: Column(
             children: [
               FancyShimmerImage(
-                imageUrl: widget.imageUrl,
+                imageUrl: productModel.imageUrl,
                 errorWidget: Image.asset('assets/images/cat/fruits.png'),
                 width: size.width * 0.22,
                 height: size.width * 0.22,
@@ -61,7 +68,7 @@ class _FeedItemsState extends State<FeedItems> {
                     Flexible(
                       flex: 3,
                       child: TextWidget(
-                        title: widget.title,
+                        title: productModel.title,
                         color: color,
                         maxLines: 1,
                         textSize: 18,
@@ -80,20 +87,20 @@ class _FeedItemsState extends State<FeedItems> {
                     Flexible(
                       flex: 4,
                       child: PriceWidget(
-                        isOnSale: false,
-                        price: 5.9,
-                        salePrice: 2.99,
+                        isOnSale: productModel.isOnSale,
+                        price: productModel.price,
+                        salePrice: productModel.salePrice,
                         textPrice: _quantityTextController.text,
                       ),
                     ),
                     SizedBox(width: 8),
                     Flexible(
-                      flex: 2,
+                      flex: 4,
                       child: Row(
                         children: [
                           FittedBox(
                             child: TextWidget(
-                              title: 'KG',
+                              title: productModel.isPiece ? 'Piece' : 'KG',
                               color: color,
                               textSize: 18,
                               isTitle: true,

@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Consts/constss.dart';
+import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/feed_items.dart';
@@ -9,6 +10,8 @@ import 'package:grocery_app/Widget/on_sale_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/feeds_screens.dart';
 import 'package:grocery_app/inner_screens/on_sale_screen.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final Utils utils = Utils(context);
     final Color color = Utils(context).color;
     final themeState = utils.getTheme;
+    final productProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productProviders.getProduct;
+    List<ProductModel> productOnSale = productProviders.getOnSaleProduct;
     Size size = utils.screenSize;
     return Scaffold(
       body: SingleChildScrollView(
@@ -87,10 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SizedBox(
                     height: size.height * 0.20,
                     child: ListView.builder(
-                      itemCount: 10,
+                      itemCount:
+                          productOnSale.length > 10 ? productOnSale.length : 10,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return OnSaleWidget();
+                        return ChangeNotifierProvider.value(
+                          value: productOnSale[index],
+                          child: OnSaleWidget(),
+                        );
                       },
                     ),
                   ),
@@ -135,13 +145,13 @@ class _HomeScreenState extends State<HomeScreen> {
               // crossAxisSpacing: 10,
               childAspectRatio: size.width / (size.height * 0.6),
               children: List.generate(
-                Constss.productsList.length < 4
-                    ? Constss.productsList.length
-                    : 4,
-                (index) => FeedItems(
-                  imageUrl: Constss.productsList[index].imageUrl,
-                  title: Constss.productsList[index].title,
-                ),
+                allProducts.length < 4 ? allProducts.length : 4,
+                (index) {
+                  return ChangeNotifierProvider.value(
+                    value: allProducts[index],
+                    child: FeedItems(),
+                  );
+                },
               ),
             ),
           ],
