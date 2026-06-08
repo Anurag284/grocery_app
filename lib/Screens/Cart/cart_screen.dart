@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Screens/Cart/cart_widget.dart';
 import 'package:grocery_app/Widget/empty_screen.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -13,8 +15,10 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     final Size size = Utils(context).screenSize;
-    bool _isEmpty = false;
-    return _isEmpty
+    final cartProvider = Provider.of<CartProvider>(context);
+    final cartItemList =
+        cartProvider.getCartItems.values.toList().reversed.toList();
+    return cartItemList.isEmpty
         ? EmptyScreen(
           title: 'Your cart is Empty',
           subtitle: 'Add something and make me happy',
@@ -24,7 +28,7 @@ class CartScreen extends StatelessWidget {
         : Scaffold(
           appBar: AppBar(
             title: TextWidget(
-              title: 'Cart (2)',
+              title: 'Cart (${cartItemList.length})',
               color: color,
               textSize: 22,
               isTitle: true,
@@ -37,6 +41,7 @@ class CartScreen extends StatelessWidget {
                     subtitle: 'Are you sure?',
                     fct: () {
                       // Handle empty cart logic here
+                      cartProvider.clearCart();
                     },
                     context: context,
                   );
@@ -52,9 +57,12 @@ class CartScreen extends StatelessWidget {
               checkOut(context: context),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 5,
+                  itemCount: cartItemList.length,
                   itemBuilder: (context, index) {
-                    return CartWidget();
+                    return ChangeNotifierProvider.value(
+                      value: cartItemList[index],
+                      child: CartWidget(q: cartItemList[index].quantity),
+                    );
                   },
                 ),
               ),

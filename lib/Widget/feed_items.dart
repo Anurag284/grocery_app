@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
@@ -29,6 +30,8 @@ class _FeedItemsState extends State<FeedItems> {
     final Size size = Utils(context).screenSize;
     final Color color = Utils(context).color;
     final productModel = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    bool? isInCart = cartProvider.getCartItems.containsKey(productModel.id);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -152,7 +155,15 @@ class _FeedItemsState extends State<FeedItems> {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed:
+                      isInCart
+                          ? null
+                          : () {
+                            cartProvider.addProdToCart(
+                              prodId: productModel.id,
+                              quantity: int.parse(_quantityTextController.text),
+                            );
+                          },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
                       Theme.of(context).cardColor,
@@ -168,7 +179,7 @@ class _FeedItemsState extends State<FeedItems> {
                     ),
                   ),
                   child: TextWidget(
-                    title: 'Add to Cart',
+                    title: isInCart ? 'In Cart' : 'Add to Cart',
                     color: color,
                     textSize: 20,
                     isTitle: true,

@@ -10,7 +10,7 @@ class ProductsProvider with ChangeNotifier {
     return _productsList.where((element) => element.isOnSale).toList();
   }
 
-  ProductModel findProdBuId(String prodId) {
+  ProductModel findProdById(String prodId) {
     return _productsList.firstWhere((element) => element.id == prodId);
   }
 

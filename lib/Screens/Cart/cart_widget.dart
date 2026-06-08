@@ -2,14 +2,20 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
+import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/product_details_screen.dart';
+import 'package:grocery_app/models/cart_model.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:provider/provider.dart';
 
 class CartWidget extends StatefulWidget {
-  const CartWidget({super.key});
+  const CartWidget({super.key, required this.q});
+  final int q;
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
@@ -19,7 +25,7 @@ class _CartWidgetState extends State<CartWidget> {
   final quantityTextController = TextEditingController(text: '1');
   @override
   void initState() {
-    quantityTextController.text = '1';
+    quantityTextController.text = widget.q.toString();
     super.initState();
   }
 
@@ -32,11 +38,20 @@ class _CartWidgetState extends State<CartWidget> {
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     final Size size = Utils(context).screenSize;
+    final productProvider = Provider.of<ProductsProvider>(context);
+    final cartModel = Provider.of<CartModel>(context);
+    final getCurentProduct = productProvider.findProdById(cartModel.prodId);
+    double usedPrice =
+        getCurentProduct.isOnSale
+            ? getCurentProduct.salePrice
+            : getCurentProduct.price;
+    final cartProvider = Provider.of<CartProvider>(context);
     return GestureDetector(
       onTap: () {
-        GlobalMethods.navigateTo(
-          context: context,
-          routeName: ProductDetailsScreen.routeName,
+        Navigator.pushNamed(
+          context,
+          ProductDetailsScreen.routeName,
+          arguments: cartModel.prodId,
         );
       },
       child: Row(
@@ -59,7 +74,7 @@ class _CartWidgetState extends State<CartWidget> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: FancyShimmerImage(
-                        imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+                        imageUrl: getCurentProduct.imageUrl,
                         errorWidget: Image.asset(
                           'assets/images/cat/fruits.png',
                         ),
@@ -72,7 +87,7 @@ class _CartWidgetState extends State<CartWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextWidget(
-                          title: 'Title',
+                          title: getCurentProduct.title,
                           color: color,
                           textSize: 20,
                           isTitle: true,
@@ -87,6 +102,9 @@ class _CartWidgetState extends State<CartWidget> {
                                   if (quantityTextController.text == '1') {
                                     return;
                                   } else {
+                                    cartProvider.reduceQuantityByOne(
+                                      cartModel.prodId,
+                                    );
                                     setState(() {
                                       quantityTextController.text =
                                           (int.parse(
@@ -128,6 +146,9 @@ class _CartWidgetState extends State<CartWidget> {
                               ),
                               _quantityWidget(
                                 fct: () {
+                                  cartProvider.increaseQuantityByOne(
+                                    cartModel.prodId,
+                                  );
                                   setState(() {
                                     quantityTextController.text =
                                         (int.parse(
@@ -151,7 +172,9 @@ class _CartWidgetState extends State<CartWidget> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              cartProvider.removeOneItem(getCurentProduct.id);
+                            },
                             child: Icon(
                               CupertinoIcons.cart_badge_minus,
                               color: Colors.red,
@@ -162,7 +185,7 @@ class _CartWidgetState extends State<CartWidget> {
                           HeartButton(),
                           SizedBox(height: 5),
                           TextWidget(
-                            title: '\$0.29',
+                            title: '\$${usedPrice.toStringAsFixed(2)}',
                             color: color,
                             textSize: 18,
                             maxLines: 1,

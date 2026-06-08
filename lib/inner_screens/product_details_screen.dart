@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
@@ -30,13 +31,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     Color color = Utils(context).color;
     Size size = Utils(context).screenSize;
     final productProviders = Provider.of<ProductsProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
     final prodId = ModalRoute.of(context)!.settings.arguments as String;
-    final getCurentProduct = productProviders.findProdBuId(prodId);
+    final getCurentProduct = productProviders.findProdById(prodId);
     double usedPrice =
         getCurentProduct.isOnSale
             ? getCurentProduct.salePrice
             : getCurentProduct.price;
     double totalPrice = usedPrice * double.parse(quantityTextController.text);
+    bool? isInCart = cartProvider.getCartItems.containsKey(getCurentProduct.id);
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -264,11 +268,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(10),
-                              onTap: () {},
+                              onTap: () {
+                                isInCart
+                                    ? null
+                                    : () {
+                                      cartProvider.addProdToCart(
+                                        prodId: getCurentProduct.id,
+                                        quantity: int.parse(
+                                          quantityTextController.text,
+                                        ),
+                                      );
+                                    };
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: TextWidget(
-                                  title: 'Add to Cart',
+                                  title: isInCart ? 'In Cart' : 'Add to Cart',
                                   color: Colors.white,
                                   textSize: 18,
                                   isTitle: false,

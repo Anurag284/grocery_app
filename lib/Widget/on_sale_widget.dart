@@ -1,12 +1,14 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
 import 'package:grocery_app/Widget/price_widget.dart';
 import 'package:grocery_app/Widget/text_widget.dart';
 import 'package:grocery_app/inner_screens/product_details_screen.dart';
+import 'package:grocery_app/models/cart_model.dart';
 import 'package:grocery_app/models/product_model.dart' show ProductModel;
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,9 @@ class OnSaleWidget extends StatelessWidget {
     final theme = Utils(context).getTheme;
     final Color color = Utils(context).color;
     final productModel = Provider.of<ProductModel>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    bool? isInCart = cartProvider.getCartItems.containsKey(productModel.id);
+
     Size size = Utils(context).screenSize;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -70,11 +75,16 @@ class OnSaleWidget extends StatelessWidget {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                cartProvider.addProdToCart(
+                                  prodId: productModel.id,
+                                  quantity: 1,
+                                );
+                              },
                               child: Icon(
-                                IconlyLight.bag2,
+                                isInCart ? IconlyBold.bag2 : IconlyLight.bag2,
                                 size: 22,
-                                color: color,
+                                color: isInCart ? Colors.green : color,
                               ),
                             ),
                             HeartButton(),

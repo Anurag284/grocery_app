@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Screens/Auth/forget_password.dart';
 import 'package:grocery_app/Screens/Auth/login.dart';
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: Consumer<DarkThemeProvider>(
         builder: (context, themeProvider, child) {
