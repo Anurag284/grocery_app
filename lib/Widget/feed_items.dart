@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_app/Providers/cart_provider.dart';
+import 'package:grocery_app/Providers/wishlist_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
@@ -32,7 +33,10 @@ class _FeedItemsState extends State<FeedItems> {
     final productModel = Provider.of<ProductModel>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     bool? isInCart = cartProvider.getCartItems.containsKey(productModel.id);
-
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+    bool? isInWishList = wishListProvider.getWishlistItems.containsKey(
+      productModel.id,
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -78,7 +82,10 @@ class _FeedItemsState extends State<FeedItems> {
                         isTitle: true,
                       ),
                     ),
-                    HeartButton(),
+                    HeartButton(
+                      prodId: productModel.id,
+                      isInWishList: isInWishList,
+                    ),
                   ],
                 ),
               ),

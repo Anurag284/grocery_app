@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Providers/product_provider.dart';
+import 'package:grocery_app/Providers/wishlist_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:grocery_app/Widget/heart_button.dart';
@@ -46,6 +47,10 @@ class _CartWidgetState extends State<CartWidget> {
             ? getCurentProduct.salePrice
             : getCurentProduct.price;
     final cartProvider = Provider.of<CartProvider>(context);
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+    bool? isInWishList = wishListProvider.getWishlistItems.containsKey(
+      getCurentProduct.id,
+    );
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -182,7 +187,10 @@ class _CartWidgetState extends State<CartWidget> {
                             ),
                           ),
                           SizedBox(height: 5),
-                          HeartButton(),
+                          HeartButton(
+                            prodId: getCurentProduct.id,
+                            isInWishList: isInWishList,
+                          ),
                           SizedBox(height: 5),
                           TextWidget(
                             title: '\$${usedPrice.toStringAsFixed(2)}',
