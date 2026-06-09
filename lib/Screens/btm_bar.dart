@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' hide badges;
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
+import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Screens/Cart/cart_screen.dart';
 import 'package:grocery_app/Screens/category.dart';
 import 'package:grocery_app/Screens/home_screen.dart';
@@ -35,6 +36,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
     final Color color = Utils(context).color;
+    final cartProvider = Provider.of<CartProvider>(context);
+
     bool _isDark = themeState.darkTheme;
     return Scaffold(
       // appBar: AppBar(title: Text(_pages[_selectIndex]['title'])),
@@ -62,7 +65,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           BottomNavigationBarItem(
             icon: Badge(
               label: FittedBox(
-                child: TextWidget(title: '2', color: color, textSize: 10),
+                child: TextWidget(
+                  title: cartProvider.getCartItems.length.toString(),
+                  color: color,
+                  textSize: 10,
+                ),
               ),
               alignment: Alignment.topRight,
               isLabelVisible: true,
