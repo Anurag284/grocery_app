@@ -54,6 +54,15 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder(
       future: _firebaseInitialization,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+          );
+        } else if (snapshot.hasError) {
+          return MaterialApp(
+            home: Scaffold(body: Center(child: Text("An error occurred."))),
+          );
+        }
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(
@@ -72,7 +81,7 @@ class _MyAppState extends State<MyApp> {
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
                 theme: Styles.themeData(themeProvider.darkTheme, context),
-                home: BottomNavBar(),
+                home: LoginScreen(),
                 routes: {
                   LoginScreen.routeName: (context) => LoginScreen(),
                   SignupScreen.routeName: (context) => SignupScreen(),
