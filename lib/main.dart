@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
 import 'package:grocery_app/Providers/cart_provider.dart';
@@ -46,44 +47,52 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final Future<FirebaseApp> _firebaseInitialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) {
-            return themeChangeProvider;
-          },
-        ),
-        ChangeNotifierProvider(create: (_) => ProductsProvider()),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => WishlistProvider()),
-        ChangeNotifierProvider(create: (_) => ViewedProvider()),
-      ],
-      child: Consumer<DarkThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: Styles.themeData(themeProvider.darkTheme, context),
-            home: BottomNavBar(),
-            routes: {
-              LoginScreen.routeName: (context) => LoginScreen(),
-              SignupScreen.routeName: (context) => SignupScreen(),
-              ForgetPasswordScreen.routeName:
-                  (context) => ForgetPasswordScreen(),
-              OnSaleScreen.routeName: (context) => OnSaleScreen(),
-              FeedsScreens.routeName: (context) => FeedsScreens(),
-              ProductDetailsScreen.routeName:
-                  (context) => ProductDetailsScreen(),
-              WishlistScreen.routeName: (context) => WishlistScreen(),
-              OrderScreen.routeName: (context) => OrderScreen(),
-              ViewedScreen.routeName: (context) => ViewedScreen(),
-              CategoryInnerScreen.routeName: (context) => CategoryInnerScreen(),
+    return FutureBuilder(
+      future: _firebaseInitialization,
+      builder: (context, snapshot) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) {
+                return themeChangeProvider;
+              },
+            ),
+            ChangeNotifierProvider(create: (_) => ProductsProvider()),
+            ChangeNotifierProvider(create: (_) => CartProvider()),
+            ChangeNotifierProvider(create: (_) => WishlistProvider()),
+            ChangeNotifierProvider(create: (_) => ViewedProvider()),
+          ],
+          child: Consumer<DarkThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: Styles.themeData(themeProvider.darkTheme, context),
+                home: BottomNavBar(),
+                routes: {
+                  LoginScreen.routeName: (context) => LoginScreen(),
+                  SignupScreen.routeName: (context) => SignupScreen(),
+                  ForgetPasswordScreen.routeName:
+                      (context) => ForgetPasswordScreen(),
+                  OnSaleScreen.routeName: (context) => OnSaleScreen(),
+                  FeedsScreens.routeName: (context) => FeedsScreens(),
+                  ProductDetailsScreen.routeName:
+                      (context) => ProductDetailsScreen(),
+                  WishlistScreen.routeName: (context) => WishlistScreen(),
+                  OrderScreen.routeName: (context) => OrderScreen(),
+                  ViewedScreen.routeName: (context) => ViewedScreen(),
+                  CategoryInnerScreen.routeName:
+                      (context) => CategoryInnerScreen(),
+                },
+              );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
