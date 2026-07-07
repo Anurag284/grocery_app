@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Consts/firbase_consts.dart';
 import 'package:grocery_app/Providers/wishlist_provider.dart';
+import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Services/utils.dart';
 import 'package:provider/provider.dart' show Provider;
 
@@ -18,6 +21,14 @@ class HeartButton extends StatelessWidget {
     final Color color = Utils(context).color;
     return GestureDetector(
       onTap: () {
+        final User? user = authInstance.currentUser;
+        if (user == null) {
+          GlobalMethods.errorDialog(
+            subtitle: 'No User Found, Please Login',
+            context: context,
+          );
+          return;
+        }
         wishlistProvider.addRemoveProdFromWishlist(prodId: prodId);
       },
       child: Icon(

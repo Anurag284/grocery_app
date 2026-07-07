@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
                 theme: Styles.themeData(themeProvider.darkTheme, context),
-                home: LoginScreen(),
+                home: BottomNavBar(),
                 routes: {
                   LoginScreen.routeName: (context) => LoginScreen(),
                   SignupScreen.routeName: (context) => SignupScreen(),

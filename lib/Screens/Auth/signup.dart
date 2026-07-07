@@ -7,6 +7,7 @@ import 'package:grocery_app/Consts/constss.dart';
 import 'package:grocery_app/Consts/firbase_consts.dart';
 import 'package:grocery_app/Screens/Auth/forget_password.dart';
 import 'package:grocery_app/Screens/Auth/login.dart';
+import 'package:grocery_app/Screens/btm_bar.dart';
 import 'package:grocery_app/Screens/loading_manager.dart';
 import 'package:grocery_app/Services/global_methods.dart';
 import 'package:grocery_app/Widget/auth_button.dart';
@@ -31,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailFocusNode = FocusNode();
   final _addressFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
-  var obscureText = true;
+  bool obscureText = true;
   @override
   void dispose() {
     _fullNameController.dispose();
@@ -48,37 +49,39 @@ class _SignupScreenState extends State<SignupScreen> {
   void _submitFormSignUp() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    if (!isValid) {
+      return;
+    }
+    _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
     });
-    if (isValid) {
-      print("the form is valid");
+    // print("the form is valid");
 
-      try {
-        await authInstance.createUserWithEmailAndPassword(
-          email: _emailTextController.text.toLowerCase().trim(),
-          password: _passwordTextController.text,
-        );
-        print('User created successfully');
-      } on FirebaseException catch (error) {
-        GlobalMethods.errorDialog(
-          subtitle: '${error.message}',
-          context: context,
-        );
-        setState(() {
-          _isLoading = false;
-        });
-      } catch (error) {
-        GlobalMethods.errorDialog(subtitle: '$error', context: context);
-        setState(() {
-          _isLoading = false;
-        });
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      // _formKey.currentState.save();
+    try {
+      await authInstance.createUserWithEmailAndPassword(
+        email: _emailTextController.text.toLowerCase().trim(),
+        password: _passwordTextController.text,
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => BottomNavBar()),
+      );
+      print('User created successfully');
+    } on FirebaseException catch (error) {
+      GlobalMethods.errorDialog(subtitle: '${error.message}', context: context);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      GlobalMethods.errorDialog(subtitle: '$error', context: context);
+      setState(() {
+        _isLoading = false;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

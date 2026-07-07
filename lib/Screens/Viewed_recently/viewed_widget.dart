@@ -1,7 +1,9 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:grocery_app/Consts/firbase_consts.dart';
 import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Providers/product_provider.dart';
 import 'package:grocery_app/Providers/viewed_provider.dart';
@@ -44,10 +46,10 @@ class _ViewedWidgetState extends State<ViewedWidget> {
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
-          GlobalMethods.navigateTo(
-            context: context,
-            routeName: ProductDetailsScreen.routeName,
-          );
+          // GlobalMethods.navigateTo(
+          //   context: context,
+          //   routeName: ProductDetailsScreen.routeName,
+          // );
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,6 +91,14 @@ class _ViewedWidgetState extends State<ViewedWidget> {
                       _isInCart
                           ? null
                           : () {
+                            final User? user = authInstance.currentUser;
+                            if (user == null) {
+                              GlobalMethods.errorDialog(
+                                subtitle: 'No User Found, Please Login',
+                                context: context,
+                              );
+                              return;
+                            }
                             cartProvider.addProdToCart(
                               prodId: getCurrentProduct.id,
                               quantity: 1,

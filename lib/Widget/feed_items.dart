@@ -1,6 +1,8 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grocery_app/Consts/firbase_consts.dart';
 import 'package:grocery_app/Providers/cart_provider.dart';
 import 'package:grocery_app/Providers/wishlist_provider.dart';
 import 'package:grocery_app/Services/global_methods.dart';
@@ -166,6 +168,14 @@ class _FeedItemsState extends State<FeedItems> {
                       isInCart
                           ? null
                           : () {
+                            final User? user = authInstance.currentUser;
+                            if (user == null) {
+                              GlobalMethods.errorDialog(
+                                subtitle: 'No User Found, Please Login',
+                                context: context,
+                              );
+                              return;
+                            }
                             cartProvider.addProdToCart(
                               prodId: productModel.id,
                               quantity: int.parse(_quantityTextController.text),

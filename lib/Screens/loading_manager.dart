@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingManager extends StatelessWidget {
   const LoadingManager({
@@ -18,7 +19,7 @@ class LoadingManager extends StatelessWidget {
             : Container(),
         isLoading
             ? Center(
-              child: CircularProgressIndicator(
+              child: SpinKitFadingFour(
                 color: const Color.fromARGB(255, 36, 15, 15),
               ),
             )
