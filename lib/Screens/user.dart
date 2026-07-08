@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app/Consts/firbase_consts.dart';
 import 'package:grocery_app/Provider/dark_theme_provider.dart';
+import 'package:grocery_app/Screens/Auth/forget_password.dart';
 import 'package:grocery_app/Screens/Auth/login.dart';
 import 'package:grocery_app/Screens/Orders/order_screen.dart';
 import 'package:grocery_app/Screens/Viewed_recently/viewed_screen.dart';
@@ -129,7 +130,13 @@ class _UserScreenState extends State<UserScreen> {
                   title: 'Forget Password',
                   // subtitle: 'Reset your password',
                   icon: IconlyLight.unlock,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ForgetPasswordScreen(),
+                      ),
+                    );
+                  },
                   color: color,
                 ),
                 SwitchListTile(
